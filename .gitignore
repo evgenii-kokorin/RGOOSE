@@ -1,0 +1,10 @@
+# Ignore everything
+env/
+inp/*
+.ropeproject/
+# But not these files...
+!.gitignore
+!main.py
+!requirements.txt
+!README.md
+
