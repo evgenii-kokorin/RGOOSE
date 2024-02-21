@@ -22,6 +22,7 @@ def goose_rgoose_table(file_path):
        во втором - сформированный r-goose."""
     try:
         # Чтение .pcap файла
+        k = 0  # для проверки что печать названий полей -однократно
         cap = pyshark.FileCapture(file_path)
         gs1_df = pd.DataFrame(columns=['goose_in', 'rgoose_out'])
         for packet in cap:
@@ -36,6 +37,9 @@ def goose_rgoose_table(file_path):
                         gs1_df.loc[gs1.packet['goose'].sqnum] = [gs1, ""]
             # ищем соответствующий r-goose
             if ("r-goose") in layers:
+                if k == 0:
+                    print(packet['r-goose'].field_names)
+                    k += 1
                 if (packet['r-goose'].goose_sqnum in gs1_df.index):
                     if (packet['r-goose'].goose_datset == gs1_df.loc[
                         packet['r-goose'].goose_sqnum, 'goose_in'].packet[
